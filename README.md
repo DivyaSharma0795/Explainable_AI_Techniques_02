@@ -1,32 +1,131 @@
-# Explainable Techniques II
-Assignment Instructions:
+# Model Interpretability using PDP, ICE, and ALE Plots
 
-PART 1
-For a model and dataset of your choice, produce PDP, ICE, and ALE plots. Exploratory analysis of your dataset should be performed to determine the amount of correlation between features.  
+## Project Overview
 
-Provide a comprehensive explanation of your plots. Discuss any interesting findings that are shown in the plots. Discuss any differences you see in the PDP and ALE plots. Discuss your exploratory findings around correlation between features and the impact this has (if any) on your results.
+This project focuses on **interpreting machine learning models** using three complementary visualization techniques:
 
+* **Partial Dependence Plots (PDP)**
+* **Individual Conditional Expectation (ICE) Plots**
+* **Accumulated Local Effects (ALE) Plots**
 
-PART 2
-For our next class, you will need to be familiar with some fundamental deep learning concepts. For some of you, this will be a quick review. For others, this may require a deeper dive. Review the videos and individually answer the quiz questions available in Canvas
+The goal is to understand how individual features influence the model’s predictions, identify key drivers of the target variable, and ensure the model's behavior is both reasonable and trustworthy.
 
-Submission
+---
 
-PART 1
-Submit a link to a GitHub repository with a Google Colab notebook for your assignment. Ensure your Google Colab notebook has the necessary documentation to run it. (See example in class repository). 
-Ensure that you are following best practices for your GitHub repository and using branches/PRs appropriately. It is your job to ensure that your repository is kept up to date with necessary requirements and documentation for running code. 
+## Objective
 
-PART 2
+* Visualize and compare the **global** and **local** effects of features on the target variable.
+* Determine which features have the most significant impact on model predictions.
+* Improve model transparency to support decision-making and responsible deployment.
 
-The Review Quiz is available in Canvas. This should be completed individually and after watching the Review videos (if necessary). You have unlimited attempts so if you need further review you can rewatch videos and retake the quiz. I encourage you to spend effort reviewing concepts, as it will make next week (and subsequent weeks) much easier.  
-Rubric
+---
 
-Part 1 - Notebook (50 points)
+## Workflow and Explanation
 
-    Notebook is well documented and includes details and references to the dataset and models used
-    Code implementing the explanation techniques is correct
-    Code implementing the explanation techniques is clear and well documented
-    Visualizations are clear, follow best practices, and has a clear caption/explanation in the notebook markdown
-    Notebook includes markdown cell(s) with comprehensive explanations of your plots. 
+### 1. Feature Importance Analysis
 
-Part 2 - Review of Deep Learning Concepts (10 points)
+Selected six features based on initial modeling results and domain relevance:
+
+* **Duration**
+* **Heart Rate**
+* **Age**
+* **Height**
+* **Gender** (binary encoded)
+* **Body Temperature**
+
+### 2. Visualization Techniques
+
+#### a. Partial Dependence Plots (PDP)
+
+* **Purpose:** Show the *average marginal effect* of a feature on the target variable.
+* **Why it matters:** PDP provides a simple, global view but can obscure individual-level variations.
+
+#### b. Individual Conditional Expectation (ICE) Plots
+
+* **Purpose:** Show how model predictions change for individual observations as a feature varies.
+* **Why it matters:** ICE plots reveal *individual-level heterogeneity* and interactions that PDP might miss.
+
+#### c. Accumulated Local Effects (ALE) Plots
+
+* **Purpose:** Show *local feature effects* while addressing issues of feature correlation and extrapolation.
+* **Why it matters:** ALE plots provide more reliable interpretations for complex, real-world datasets.
+
+---
+
+### 3. Key Findings
+
+#### Primary Influencers:
+
+* **Duration:**
+
+  * Strongest impact across all plots.
+  * PDP shows a clear positive trend.
+  * ICE confirms consistent upward trends with slight individual variation.
+  * ALE shows a significant positive increase (+80 units across the feature range).
+
+* **Heart Rate:**
+
+  * Moderate influence.
+  * PDP shows a gradual increase from 65 to 110 BPM.
+  * ICE reveals individual differences in sensitivity.
+  * ALE suggests the effect strengthens at higher heart rates.
+
+#### Secondary Influencer:
+
+* **Age:**
+
+  * Modest positive effect.
+  * ICE plots show varied individual responses, highlighting diverse patterns.
+  * ALE confirms a positive but smaller overall contribution (+25 units).
+
+#### Minimal Impact Features:
+
+* **Height:**
+
+  * Appears nearly flat in PDP.
+  * ICE shows scattered, individual-specific effects.
+  * ALE indicates a complex but ultimately low-impact, non-linear relationship.
+
+* **Gender:**
+
+  * Minimal effect across all plots.
+
+* **Body Temperature:**
+
+  * Negligible influence confirmed by all three plots.
+
+---
+
+### 4. Interpretation Summary
+
+* **PDP:** Provides a global, averaged understanding of feature effects.
+* **ICE:** Reveals variability at the individual observation level.
+* **ALE:** Offers a more accurate, localized interpretation that accounts for feature interactions.
+
+Together, these tools:
+
+* Validate that **Duration** and **Heart Rate** are the primary drivers of the target.
+* Confirm that **demographic and physical features like Gender, Height, and Body Temperature have limited influence.**
+* Help detect potential model biases and ensure the model’s decision logic aligns with domain expectations.
+
+---
+
+## Key Takeaways
+
+* **Duration** and **Heart Rate** are the most impactful features.
+* ALE plots are particularly valuable when features are correlated or when a localized understanding is needed.
+* Using all three plot types provides a comprehensive view of model behavior—global trends, individual-level effects, and localized sensitivities.
+
+---
+
+## Future Directions
+
+* Investigate additional features and potential feature interactions.
+* Extend analysis to multiple models to compare interpretability across different algorithms.
+* Explore SHAP values as another method for feature attribution.
+
+---
+
+## Contact
+
+For any questions or further collaboration, please reach out to **Divya Sharma** via LinkedIn or email.
